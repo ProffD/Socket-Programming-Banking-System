@@ -1,0 +1,5 @@
+﻿  ATM.cpp
+  main.cpp
+d:\his stuff\projects\visual studio projects\atm_server\atm_server\main.cpp(15): warning C4326: return type of 'main' should be 'int' instead of 'void'
+  Generating Code...
+  ATM_Server.vcxproj -> D:\His Stuff\Projects\Visual Studio Projects\ATM_Server\Debug\ATM_Server.exe

@@ -79,19 +79,27 @@ void main() {
 	std::chrono::system_clock::time_point today = std::chrono::system_clock::now();
 	time_t tt = std::chrono::system_clock::to_time_t(today);
 	std::tm tm = *std::localtime(&tt);
-	std::stringstream dtbuffer;
-	dtbuffer << "Date: " << std::put_time(&tm, "%A %d %b %Y");
-	dtbuffer << "\nTime: " << std::put_time(&tm, "%H:%M:%S");
-	std::string dateTime = dtbuffer.str();
 
-	std::string welcome_menu = "==========WELCOME TO IBANK!!===============\n"+dateTime+"\nTo make a Transaction,Please Select One of the following Options\nB)alance\nD)eposit\nW)ithdraw\nP)rint Slip\nE)xit or press Enter to Exit Program\n";
+
+	std::stringstream welcome;
+	welcome << "==========WELCOME TO IBANK!!===============\n";
+	welcome << "Date: " << std::put_time(&tm, "%A %d %b %Y") << '\n';
+	welcome << "Time: " << std::put_time(&tm, "%H:%M:%S") << '\n';   
+	welcome << "To make a Transaction, Please Select One of the following Options\n";
+	welcome << "B)alance\n";
+	welcome << "D)eposit\n";
+	welcome << "P)rint Slip\n";
+	welcome << "E)xit or press Enter to Exit Program\n";
+
+	std::string welcome_menu = welcome.str();
+
 	send(clientSocket, welcome_menu.c_str(), welcome_menu.size() + 1, 0);
 
-	char buf[256];
+	char buf[512];
 	while (true) {
-		ZeroMemory(buf, 256);
+		ZeroMemory(buf, 512);
 		//Wait for client to send data
-		int receivedBytes = recv(clientSocket, buf, 256, 0);
+		int receivedBytes = recv(clientSocket, buf, 512, 0);
 		if (receivedBytes == SOCKET_ERROR) {
 			std::cout << "ERROR: Could not recieve data!" << '\n';
 			break;

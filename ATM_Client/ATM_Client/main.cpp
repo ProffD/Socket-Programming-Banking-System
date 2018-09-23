@@ -71,8 +71,8 @@ void main() {
 			int sendResults = send(sock, userInput.c_str(), userInput.size() + 1, 0);
 			if (sendResults != SOCKET_ERROR) {
 				//Wait for response
-				ZeroMemory(buf, 256);
-				int receivedBytes = recv(sock, buf, 256, 0);
+				ZeroMemory(buf, 512);
+				int receivedBytes = recv(sock, buf, 512, 0);
 				if (receivedBytes > 0) {
 					//Echo back to console
 					std::cout << std::string(buf, 0, receivedBytes) << '\n';

@@ -1,3 +1,10 @@
+// Server ATM Application
+//
+// Copyright (C) 2018 Tshenolo Matome::ProffD
+//
+// Distributed under the His_Softworks Software License, Version 1.1.0.
+// Copying or duplicating this application is prohibited!.
+
 #include<iostream>
 #include<string>
 #include <WS2tcpip.h>
@@ -8,7 +15,7 @@
 #include "ATM.h"
 
 #pragma comment (lib, "ws2_32.lib")
-#pragma warning(disable : 4996)
+#pragma warning(disable : 4996)       //To be able to use c library
 
 void wait(); // Wait 5 seconds before closing Server Console
 
@@ -104,25 +111,25 @@ void main() {
 				send(clientSocket, bal.c_str(), bal.size() + 1, 0);
 			}
 			else if (std::string(buf, 0, receivedBytes) == "D" || std::string(buf, 0, receivedBytes) == "d") {
-				//std::string amount = "How much do want to deposite?";
-				//send(clientSocket, amount.c_str(), amount.size() + 1, 0);
-				//auto rec = recv(clientSocket, buf, 256, 0);				
-				//atm.deposite(float(rec));	
-
-				float amount = 600.0f; // needs to come from client
-				atm.deposite(amount);
-				std::string deposite = "Deposited: R" + std::to_string(amount) + "\nBalance: R" + std::to_string(atm.getbalance());
-
-			
-				send(clientSocket, deposite.c_str(), deposite.size() + 1, 0);
+				 std::string que = "How much do want to deposite?";
+				 send(clientSocket, que.c_str(), que.size() + 1, 0);
+				 recv(clientSocket, buf, 256, 0);
+				 std::string amount = buf;
+				 
+				 atm.deposite(std::stof(amount));
+				 std::string deposite = "Deposited: R" + amount + "\nBalance: R" + std::to_string(atm.getbalance());
+				 			
+				 send(clientSocket, deposite.c_str(), deposite.size() + 1, 0);
 
 			}
 			else if (std::string(buf, 0, receivedBytes) == "W" || std::string(buf, 0, receivedBytes) == "w") {
-				//std::string amount = "How much do want to withdraw?";
-				float amount = 200.0f; // needs to come from client
-				if (atm.withdraw(amount)) {
-					std::string withdraw = "Requested Amount: R" + std::to_string(amount) + "\nBalance: R" + std::to_string(atm.getbalance());
+				std::string que = "How much do want to withdraw?";
+				send(clientSocket, que.c_str(), que.size() + 1, 0);
+				recv(clientSocket, buf, 256, 0);
+				std::string amount = buf;
 
+				if (atm.withdraw(std::stof(amount))) {
+					std::string withdraw = "Requested Amount: R" + amount + "\nBalance: R" + std::to_string(atm.getbalance());
 					send(clientSocket, withdraw.c_str(), withdraw.size() + 1, 0);
 				}
 				else
